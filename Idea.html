@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdeaHub - Share Your Creative Ideas</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8A2BE2;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #8A2BE2;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+            background: linear-gradient(135deg, #8A2BE2 0%, #4A90E2 100%);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 100px 0;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .category-card.visible {
+            display: block;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-card h3 {
+            color: #8A2BE2;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .category-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .category-card ul li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .category-card ul li:hover {
+            color: #8A2BE2;
+            cursor: pointer;
+        }
+
+        /* Show More Button */
+        .show-more-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .show-more-btn {
+            background: #8A2BE2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .show-more-btn:hover {
+            background: #7B1FA2;
+            transform: translateY(-2px);
+        }
+
+        /* Featured Ideas Section */
+        .featured-ideas {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .idea-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .idea-card h3 {
+            color: #8A2BE2;
+            margin-bottom: 15px;
+        }
+
+        /* Call to Action */
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #4A90E2 0%, #8A2BE2 100%);
+            color: white;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: white;
+            color: #8A2BE2;
+        }
+
+        .btn-secondary {
+            border: 2px solid white;
+            color: white;
+            margin-left: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 0;
+            background: #333;
+            color: white;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            color: #8A2BE2;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">IdeaHub</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#categories">Categories</a>
+                <a href="#ideas">Ideas</a>
+                <a href="#submit">Submit Idea</a>
+                <a href="#log in / #sign up">Log in / sign up</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Share Your Creative Ideas</h1>
+            <p>Connect with innovators, investors, and creators. Turn your ideas into reality.</p>
+            <a href="#submit" class="btn btn-primary">Share Your Idea</a>
+            <a href="#browse" class="btn btn-secondary">Browse Ideas</a>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2>Explore Categories</h2>
+            <div class="categories-grid">
+                <!-- Initially visible categories -->
+                <div class="category-card visible">
+                    <h3>Art and Design</h3>
+                    <ul>
+                        <li>Graphic Design</li>
+                        <li>Visual Arts</li>
+                        <li>Fashion Design</li>
+                        <li>Photography & Filmmaking</li>
+                    </ul>
+                </div>
+
+                <div class="category-card visible">
+                    <h3>Technology & Innovation</h3>
+                    <ul>
+                        <li>Artificial Intelligence</li>
+                        <li>Internet of Things (IoT)</li>
+                        <li>Virtual/Augmented Reality</li>
+                        <li>Robotics</li>
+                    </ul>
+                </div>
+
+                <div class="category-card visible">
+                    <h3>Environment & Sustainability</h3>
+                    <ul>
+                        <li>Renewable Energy</li>
+                        <li>Sustainable Agriculture</li>
+                        <li>Waste Management</li>
+                        <li>Environmental Conservation</li>
+                    </ul>
+                </div>
+
+                <div class="category-card visible">
+                    <h3>Health & Wellness</h3>
+                    <ul>
+                        <li>Health Technologies</li>
+                        <li>Nutrition and Diets</li>
+                        <li>Sports and Fitness</li>
+                        <li>Mental Health</li>
+                    </ul>
+                </div>
+
+                <div class="category-card visible">
+                    <h3>Education & Learning</h3>
+                    <ul>
+                        <li>Educational Platforms</li>
+                        <li>Learning Tools</li>
+                        <li>Teaching Methods</li>
+                        <li>Life Skills</li>
+                    </ul>
+                </div>
+
+                <div class="category-card visible">
+                    <h3>Entertainment & Media</h3>
+                    <ul>
+                        <li>Video Games</li>
+                        <li>Podcasts and Radio</li>
+                        <li>Social Networks</li>
+                        <li>Film and TV</li>
+                    </ul>
+                </div>
+
+                <!-- Hidden categories -->
+                <div class="category-card">
+                    <h3>Tourism & Travel</h3>
+                    <ul>
+                        <li>Travel Experiences</li>
+                        <li>Ecotourism</li>
+                        <li>Travel Technologies</li>
+                        <li>New Destinations</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Economy & Business</h3>
+                    <ul>
+                        <li>Business Models</li>
+                        <li>Fintech</li>
+                        <li>Marketing and Advertising</li>
+                        <li>Social Entrepreneurship</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Food & Beverage</h3>
+                    <ul>
+                        <li>New Recipes</li>
+                        <li>Food Technologies</li>
+                        <li>Restaurants and Cafes</li>
+                        <li>Healthy Foods</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Social & Cultural</h3>
+                    <ul>
+                        <li>Social Activities</li>
+                        <li>Local Culture and Art</li>
+                        <li>Events and Festivals</li>
+                        <li>International Collaborations</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Transportation & Logistics</h3>
+                    <ul>
+                        <li>Smart Transportation</li>
+                        <li>Autonomous Vehicles</li>
+                        <li>Logistics Solutions</li>
+                        <li>Sustainable Transport</li>
+                    </ul>
+                </div>
+                
+                <div class="category-card">
+                    <h3>Startups</h3>
+                    <ul>
+                        <li>Startup Ideas</li>
+                        <li>Revenue Models</li>
+                        <li>New Markets</li>
+                        <li>Startup Collaborations</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Practical Inventions</h3>
+                    <ul>
+                        <li>Technological Inventions</li>
+                        <li>Medical Inventions</li>
+                        <li>Environmental Inventions</li>
+                        <li>Daily Life Solutions</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>Music Projects</h3>
+                    <ul>
+                        <li>Music Production</li>
+                        <li>Songwriting</li>
+                        <li>Music Collaborations</li>
+                        <li>Experimental Music</li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <h3>App Development</h3>
+                    <ul>
+                        <li>Mobile Apps</li>
+                        <li>Web Applications</li>
+                        <li>Social Apps</li>
+                        <li>Smart Applications</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="show-more-container">
+                <button class="show-more-btn" id="showMoreBtn">Show More Categories</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-ideas" id="ideas">
+        <div class="container">
+            <h2>Featured Ideas</h2>
+            <div class="ideas-grid">
+                <div class="idea-card">
+                    <h3>AI-Powered Education Platform</h3>
+                    <p>A personalized learning system that adapts to each student's needs...</p>
+                    <span>Category: Education & Technology</span>
+                </div>
+                <div class="idea-card">
+                    <h3>Sustainable Urban Gardens</h3>
+                    <p>Vertical farming solution for urban areas with limited space...</p>
+                    <span>Category: Environment</span>
+                </div>
+                <div class="idea-card">
+                    <h3>AR Fashion Try-On</h3>
+                    <p>Try clothes virtually using augmented reality technology...</p>
+                    <span>Category: Fashion & Technology</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Share Your Idea?</h2>
+            <p>Join our community of innovators and make your ideas come to life</p>
+            <a href="#register" class="btn btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#how">How It Works</a></li>
+                    <li><a href="#success">Success Stories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="#tech">Technology</a></li>
+                    <li><a href="#art">Art & Design</a></li>
+                    <li><a href="#health">Health</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#help">Help Center</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            const hiddenCategories = document.querySelectorAll('.category-card:not(.visible)');
+            let isExpanded = false;
+
+            showMoreBtn.addEventListener('click', function() {
+                if (!isExpanded) {
+                    hiddenCategories.forEach(card => {
+                        card.classList.add('visible');
+                    });
+                    showMoreBtn.textContent = 'Show Less';
+                } else {
+                    hiddenCategories.forEach(card => {
+                        card.classList.remove('visible');
+                    });
+                    showMoreBtn.textContent = 'Show More Categories';
+                }
+                isExpanded = !isExpanded;
+            });
+        });
+    </script>
+</body>
+</html>
