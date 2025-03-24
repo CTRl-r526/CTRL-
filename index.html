@@ -451,6 +451,130 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Add these styles to your existing CSS */
+        .browse-ideas-container {
+            padding: 20px;
+        }
+
+        .idea-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .idea-status.verified {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .idea-meta {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .idea-meta .category {
+            color: #8A2BE2;
+            font-weight: 500;
+        }
+
+        .idea-meta .date {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .idea-card {
+            position: relative;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .idea-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .idea-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* About Us Section */
+        .about-us {
+            padding: 100px 0;
+            background: #f8f9fa;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .about-text h3 {
+            color: #8A2BE2;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .about-text p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .about-details {
+            margin-top: 30px;
+        }
+
+        .about-details h4 {
+            color: #333;
+            margin: 20px 0 10px;
+            font-size: 1.2em;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -461,7 +585,7 @@
                 <a href="#" id="homeLink">Home</a>
                 <a href="#categories">Categories</a>
                 <a href="#ideas">Ideas</a>
-                <a href="#submit">Submit Idea</a>
+                <a href="#about">About Us</a>
                 <a href="#" id="loginBtn">Log in / sign up</a>
             </div>
         </div>
@@ -662,6 +786,31 @@
         </div>
     </section>
 
+    <!-- About Us Section -->
+    <section class="about-us" id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Welcome to IdeaHub</h3>
+                    <p>IdeaHub is a platform dedicated to fostering innovation and creativity. We believe that great ideas can come from anywhere, and we're here to help bring those ideas to life.</p>
+                    
+                    <div class="about-details">
+                        <h4>Our Mission</h4>
+                        <p>To create a community where innovators can share their ideas, connect with like-minded individuals, and turn their creative visions into reality.</p>
+                        
+                        <h4>Our Vision</h4>
+                        <p>To be the leading platform for idea sharing and innovation, making a positive impact on society through creative solutions.</p>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <img src="placeholder-about.jpg" alt="About IdeaHub">
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="cta">
         <div class="container">
             <h2>Ready to Share Your Idea?</h2>
@@ -817,6 +966,78 @@
                     </div>
                 </div>
                 <div class="error-message" id="loginModalError"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Browse Ideas Modal -->
+    <div id="browseIdeasModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBrowseModal">&times;</span>
+            <h1>Accepted Ideas</h1>
+            <div class="browse-ideas-container">
+                <div class="ideas-grid">
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Smart City Traffic Management</h3>
+                        <p>An AI-powered traffic management system that uses real-time data to optimize traffic flow and reduce congestion in urban areas.</p>
+                        <div class="idea-meta">
+                            <span class="category">Technology & Innovation</span>
+                            <span class="date">Submitted by: John Doe</span>
+                            <span class="date">Accepted: March 20, 2024</span>
+                        </div>
+                    </div>
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Eco-Friendly Packaging Solution</h3>
+                        <p>Biodegradable packaging material made from agricultural waste that decomposes within 30 days.</p>
+                        <div class="idea-meta">
+                            <span class="category">Environment & Sustainability</span>
+                            <span class="date">Submitted by: Sarah Smith</span>
+                            <span class="date">Accepted: March 18, 2024</span>
+                        </div>
+                    </div>
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Mental Health Support App</h3>
+                        <p>A mobile application that provides 24/7 mental health support through AI chatbots and connects users with licensed therapists.</p>
+                        <div class="idea-meta">
+                            <span class="category">Health & Wellness</span>
+                            <span class="date">Submitted by: Mike Johnson</span>
+                            <span class="date">Accepted: March 15, 2024</span>
+                        </div>
+                    </div>
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Virtual Art Gallery Platform</h3>
+                        <p>An online platform where artists can showcase their work in virtual galleries, allowing visitors to explore art from anywhere in the world.</p>
+                        <div class="idea-meta">
+                            <span class="category">Art and Design</span>
+                            <span class="date">Submitted by: Emily Brown</span>
+                            <span class="date">Accepted: March 12, 2024</span>
+                        </div>
+                    </div>
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Smart Agriculture System</h3>
+                        <p>IoT-based farming system that monitors soil conditions, weather, and crop health to optimize irrigation and fertilization.</p>
+                        <div class="idea-meta">
+                            <span class="category">Environment & Sustainability</span>
+                            <span class="date">Submitted by: David Wilson</span>
+                            <span class="date">Accepted: March 10, 2024</span>
+                        </div>
+                    </div>
+                    <div class="idea-card">
+                        <div class="idea-status verified">✓ Accepted</div>
+                        <h3>Language Learning Game</h3>
+                        <p>An interactive game that helps users learn new languages through immersive storytelling and real-world scenarios.</p>
+                        <div class="idea-meta">
+                            <span class="category">Education & Learning</span>
+                            <span class="date">Submitted by: Lisa Chen</span>
+                            <span class="date">Accepted: March 8, 2024</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1012,6 +1233,29 @@ ${data.implementation || 'Not provided'}
                 document.getElementById('loginModalError').textContent = 'An error occurred during sign-in. Please try again.';
             }
         }
+
+        // Add this to your existing JavaScript
+        const browseIdeasModal = document.getElementById('browseIdeasModal');
+        const closeBrowseBtn = document.getElementById('closeBrowseModal');
+        const browseIdeasBtn = document.querySelector('a[href="#browse"]');
+
+        // Open browse ideas modal
+        browseIdeasBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            browseIdeasModal.style.display = 'block';
+        });
+
+        // Close browse ideas modal
+        closeBrowseBtn.addEventListener('click', function() {
+            browseIdeasModal.style.display = 'none';
+        });
+
+        // Close browse ideas modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === browseIdeasModal) {
+                browseIdeasModal.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
