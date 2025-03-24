@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IdeaHub - Share Your Creative Ideas</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
     <style>
         /* Reset and base styles */
         * {
@@ -58,6 +61,7 @@
             color: #333;
             font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         .nav-links a:hover {
@@ -244,6 +248,209 @@
             color: white;
             text-decoration: none;
         }
+
+        /* Form Sections */
+        .form-container {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8A2BE2;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: #8A2BE2;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #7B1FA2;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #28a745;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            display: none;
+            text-align: center;
+            color: #dc3545;
+            margin-top: 20px;
+        }
+
+        .recaptcha-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-form h2 {
+            color: #8A2BE2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .idea-form {
+            display: none;
+        }
+
+        .idea-form.active {
+            display: block;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close-modal:hover {
+            color: #8A2BE2;
+        }
+
+        /* Google Sign-In styles */
+        .google-signin-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .google-signin-container h2 {
+            color: #8A2BE2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .google-signin-container p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .google-signin-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .google-signin-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .google-signin-btn img {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+
+        .google-signin-btn span {
+            color: #757575;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Add smooth scrolling behavior */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body>
@@ -251,11 +458,11 @@
         <div class="container nav-content">
             <a href="#" class="logo">IdeaHub</a>
             <div class="nav-links">
-                <a href="#home">Home</a>
+                <a href="#" id="homeLink">Home</a>
                 <a href="#categories">Categories</a>
                 <a href="#ideas">Ideas</a>
                 <a href="#submit">Submit Idea</a>
-                <a href="#log in / #sign up">Log in / sign up</a>
+                <a href="#" id="loginBtn">Log in / sign up</a>
             </div>
         </div>
     </nav>
@@ -264,7 +471,7 @@
         <div class="container">
             <h1>Share Your Creative Ideas</h1>
             <p>Connect with innovators, investors, and creators. Turn your ideas into reality.</p>
-            <a href="#submit" class="btn btn-primary">Share Your Idea</a>
+            <a href="share-idea.html" class="btn btn-primary">Share Your Idea</a>
             <a href="#browse" class="btn btn-secondary">Browse Ideas</a>
         </div>
     </section>
@@ -459,7 +666,7 @@
         <div class="container">
             <h2>Ready to Share Your Idea?</h2>
             <p>Join our community of innovators and make your ideas come to life</p>
-            <a href="#register" class="btn btn-primary">Get Started</a>
+            <a href="share-idea.html" class="btn btn-primary">Get Started</a>
         </div>
     </section>
 
@@ -492,8 +699,140 @@
         </div>
     </footer>
 
+    <!-- Share Idea Modal -->
+    <div id="shareIdeaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h1>Share Your Creative Idea</h1>
+            
+            <!-- Google Sign-In Form -->
+            <div class="form-container login-form active">
+                <h2>Continue with Google</h2>
+                <p>Sign in to submit your creative idea</p>
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="798390301621-62aq4q083hcjlfj4kojfbso396ejmb58.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleCredentialResponse"
+                         data-auto_select="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="continue_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="error-message" id="loginError"></div>
+            </div>
+
+            <!-- Idea Submission Form -->
+            <div class="form-container idea-form">
+                <form class="idea-form" id="ideaForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Idea Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="Art and Design">Art and Design</option>
+                            <option value="Technology & Innovation">Technology & Innovation</option>
+                            <option value="Environment & Sustainability">Environment & Sustainability</option>
+                            <option value="Health & Wellness">Health & Wellness</option>
+                            <option value="Education & Learning">Education & Learning</option>
+                            <option value="Entertainment & Media">Entertainment & Media</option>
+                            <option value="Tourism & Travel">Tourism & Travel</option>
+                            <option value="Economy & Business">Economy & Business</option>
+                            <option value="Food & Beverage">Food & Beverage</option>
+                            <option value="Social & Cultural">Social & Cultural</option>
+                            <option value="Transportation & Logistics">Transportation & Logistics</option>
+                            <option value="Startups">Startups</option>
+                            <option value="Practical Inventions">Practical Inventions</option>
+                            <option value="Music Projects">Music Projects</option>
+                            <option value="App Development">App Development</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Idea Title</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Idea Description</label>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="implementation">Implementation Details (Optional)</label>
+                        <textarea id="implementation" name="implementation"></textarea>
+                    </div>
+
+                    <div class="recaptcha-container">
+                        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn" disabled>Submit Your Idea</button>
+                </form>
+                <div class="success-message" id="successMessage"></div>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLoginModal">&times;</span>
+            <h1>Welcome to IdeaHub</h1>
+            <div class="form-container login-form active">
+                <h2>Continue with Google</h2>
+                <p>Sign in to access all features</p>
+                <div class="google-signin-container">
+                    <div id="g_id_onload_login"
+                         data-client_id="798390301621-62aq4q083hcjlfj4kojfbso396ejmb58.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleLoginCredentialResponse"
+                         data-auto_select="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="continue_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                <div class="error-message" id="loginModalError"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scroll to top functionality
+            const homeLink = document.getElementById('homeLink');
+            homeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
             const showMoreBtn = document.getElementById('showMoreBtn');
             const hiddenCategories = document.querySelectorAll('.category-card:not(.visible)');
             let isExpanded = false;
@@ -513,6 +852,166 @@
                 isExpanded = !isExpanded;
             });
         });
+
+        // Modal handling
+        const modal = document.getElementById('shareIdeaModal');
+        const closeBtn = document.querySelector('.close-modal');
+        const shareIdeaBtns = document.querySelectorAll('a[href="share-idea.html"]');
+
+        // Update all share idea buttons to open modal
+        shareIdeaBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'block';
+            });
+        });
+
+        // Close modal when clicking the X
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Google Sign-In handling
+        function handleCredentialResponse(response) {
+            try {
+                // Decode the JWT token
+                const responsePayload = jwt_decode(response.credential);
+                
+                // Check if the email is verified
+                if (responsePayload.email_verified) {
+                    // Show the idea submission form
+                    document.querySelector('.login-form').classList.remove('active');
+                    document.querySelector('.idea-form').classList.add('active');
+                    
+                    // Pre-fill the email field with the Google account email
+                    document.getElementById('email').value = responsePayload.email;
+                    document.getElementById('name').value = responsePayload.name;
+                } else {
+                    document.getElementById('loginError').style.display = 'block';
+                    document.getElementById('loginError').textContent = 'Please use a verified Google account';
+                }
+            } catch (error) {
+                console.error('Error handling Google Sign-In:', error);
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginError').textContent = 'An error occurred during sign-in. Please try again.';
+            }
+        }
+
+        // reCAPTCHA handling
+        function enableSubmitButton() {
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // Idea form handling
+        document.getElementById('ideaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Please complete the reCAPTCHA verification';
+                return;
+            }
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Create email body
+            const emailBody = `
+Name: ${data.name}
+Email: ${data.email}
+Category: ${data.category}
+Title: ${data.title}
+
+Description:
+${data.description}
+
+Implementation Details:
+${data.implementation || 'Not provided'}
+            `;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:m.mohammad.r526@gmail.com?subject=New Idea Submission: ${data.title}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successMessage').textContent = 'Your idea has been submitted successfully!';
+            
+            // Reset form and reCAPTCHA
+            this.reset();
+            grecaptcha.reset();
+            document.getElementById('submitBtn').disabled = true;
+        });
+
+        // Login Modal handling
+        const loginModal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeLoginBtn = document.getElementById('closeLoginModal');
+
+        // Open login modal
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'block';
+        });
+
+        // Close login modal
+        closeLoginBtn.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+        });
+
+        // Close login modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        // Handle login with Google
+        function handleLoginCredentialResponse(response) {
+            try {
+                // Decode the JWT token
+                const responsePayload = jwt_decode(response.credential);
+                
+                // Check if the email is verified
+                if (responsePayload.email_verified) {
+                    // Show success message
+                    document.getElementById('loginModalError').style.display = 'none';
+                    document.querySelector('.google-signin-container').innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <h3 style="color: #28a745; margin-bottom: 10px;">Successfully signed in!</h3>
+                            <p>Welcome, ${responsePayload.name}</p>
+                            <p style="color: #666; font-size: 0.9em;">${responsePayload.email}</p>
+                        </div>
+                    `;
+                    
+                    // Update the login button text
+                    loginBtn.textContent = 'My Account';
+                    
+                    // Close modal after 2 seconds
+                    setTimeout(() => {
+                        loginModal.style.display = 'none';
+                    }, 2000);
+                } else {
+                    document.getElementById('loginModalError').style.display = 'block';
+                    document.getElementById('loginModalError').textContent = 'Please use a verified Google account';
+                }
+            } catch (error) {
+                console.error('Error handling Google Sign-In:', error);
+                document.getElementById('loginModalError').style.display = 'block';
+                document.getElementById('loginModalError').textContent = 'An error occurred during sign-in. Please try again.';
+            }
+        }
     </script>
 </body>
 </html>
