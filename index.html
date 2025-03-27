@@ -90,6 +90,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1001;
         }
 
         .logo {
@@ -113,7 +115,7 @@
             width: 30px;
             height: 21px;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 1002;
         }
 
         .hamburger span {
@@ -821,7 +823,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: 1002;
             transition: var(--transition);
             padding: 0;
         }
@@ -840,18 +842,49 @@
         @media (max-width: 768px) {
             .theme-toggle {
                 top: 15px;
-                width: 45px;
-                height: 45px;
+                right: 60px;
+                width: 40px;
+                height: 40px;
                 font-size: 18px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--nav-bg);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 80px 20px;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px var(--shadow-color);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1002;
             }
         }
 
         @media (max-width: 480px) {
             .theme-toggle {
                 top: 10px;
-                width: 40px;
-                height: 40px;
+                right: 50px;
+                width: 35px;
+                height: 35px;
                 font-size: 16px;
+            }
+
+            .nav-links {
+                padding: 70px 15px;
             }
         }
 
@@ -865,7 +898,7 @@
         }
 
         .theme-toggle {
-            z-index: 9999;
+            z-index: 1002;
         }
 
         /* Add smooth transition for theme changes */
