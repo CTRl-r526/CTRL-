@@ -873,29 +873,11 @@
             transition: var(--transition);
         }
 
-        /* Responsive Design Improvements */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .gradient-bg {
-                background: -webkit-linear-gradient(135deg, var(--primary-color), #6A5ACD);
-                background: linear-gradient(135deg, var(--primary-color), #6A5ACD);
-            }
-        }
-
-        /* Responsive Design */
+        /* Enhanced Responsive Design */
         @media (max-width: 1200px) {
             .container {
                 max-width: 960px;
                 padding: 0 15px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .container {
-                max-width: 720px;
             }
 
             .hero h1 {
@@ -905,13 +887,27 @@
             .hero p {
                 font-size: 20px;
             }
+        }
 
-            .nav-links {
-                gap: 25px;
+        @media (max-width: 992px) {
+            .container {
+                max-width: 720px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
             }
 
             .category-card, .idea-card {
                 padding: 25px;
+            }
+
+            .nav-links {
+                gap: 20px;
             }
         }
 
@@ -922,9 +918,6 @@
 
             /* Navigation */
             .nav-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
                 padding: 0 15px;
             }
 
@@ -958,37 +951,32 @@
                 display: block;
             }
 
-            .hamburger.active span:nth-child(1) {
-                transform: translateY(9px) rotate(45deg);
-            }
-
-            .hamburger.active span:nth-child(2) {
-                opacity: 0;
-            }
-
-            .hamburger.active span:nth-child(3) {
-                transform: translateY(-9px) rotate(-45deg);
-            }
-
             /* Hero Section */
             .hero {
-                padding: 120px 0 80px;
+                padding: 120px 0 60px;
             }
 
             .hero h1 {
-                font-size: 40px;
+                font-size: 36px;
+                margin-bottom: 20px;
             }
 
             .hero p {
-                font-size: 18px;
+                font-size: 16px;
+                margin-bottom: 30px;
             }
 
             .btn {
-                padding: 14px 35px;
-                font-size: 15px;
+                padding: 12px 25px;
+                font-size: 14px;
+                margin: 5px;
             }
 
             /* Categories Section */
+            .categories {
+                padding: 60px 0;
+            }
+
             .categories-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -996,12 +984,21 @@
 
             .category-card {
                 margin: 0 10px;
+                padding: 20px;
             }
 
             /* Featured Ideas */
+            .featured-ideas {
+                padding: 60px 0;
+            }
+
             .ideas-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
+            }
+
+            .idea-card {
+                padding: 20px;
             }
 
             /* About Us Section */
@@ -1020,45 +1017,6 @@
                 text-align: center;
                 gap: 30px;
             }
-        }
-
-        @media (max-width: 576px) {
-            .container {
-                padding: 0 10px;
-            }
-
-            /* Navigation */
-            .logo {
-                font-size: 24px;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-
-            /* Hero Section */
-            .hero {
-                padding: 100px 0 60px;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            /* Categories and Ideas */
-            .category-card, .idea-card {
-                padding: 20px;
-            }
-
-            .category-card h3, .idea-card h3 {
-                font-size: 1.2rem;
-            }
 
             /* Modal */
             .modal-content {
@@ -1072,19 +1030,23 @@
                 padding: 8px;
                 font-size: 14px;
             }
-
-            /* Theme Toggle */
-            .theme-toggle {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
         }
 
-        /* Additional Responsive Utilities */
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            /* Navigation */
+            .logo {
+                font-size: 24px;
+            }
+
+            /* Hero Section */
+            .hero {
+                padding: 100px 0 40px;
+            }
+
             .hero h1 {
                 font-size: 28px;
             }
@@ -1094,53 +1056,20 @@
             }
 
             .btn {
-                padding: 12px 25px;
-                font-size: 14px;
-            }
-
-            .category-card ul li,
-            .idea-card p {
-                font-size: 14px;
-            }
-
-            .modal-content h1 {
-                font-size: 24px;
-            }
-
-            .contact-header h2 {
-                font-size: 24px;
-            }
-
-            .contact-text h3 {
-                font-size: 14px;
-            }
-
-            .contact-text a,
-            .contact-text p {
-                font-size: 13px;
-            }
-        }
-
-        /* Fix for very small screens */
-        @media (max-width: 360px) {
-            .hero h1 {
-                font-size: 24px;
-            }
-
-            .hero p {
-                font-size: 13px;
-            }
-
-            .btn {
                 padding: 10px 20px;
                 font-size: 13px;
             }
 
-            .category-card h3,
-            .idea-card h3 {
+            /* Categories and Ideas */
+            .category-card, .idea-card {
+                padding: 15px;
+            }
+
+            .category-card h3, .idea-card h3 {
                 font-size: 1.1rem;
             }
 
+            /* Modal */
             .modal-content {
                 margin: 10px;
                 padding: 10px;
